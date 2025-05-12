@@ -10,10 +10,7 @@ func main() {
 
 	rec := router.Group("/records")
 	{
-		rec.POST("/chart", handlers.RecordChartNote)
-		rec.GET("/chart", handlers.GetChartNotes)
-		rec.POST("/exam", handlers.PerformExam)
-		rec.POST("/exam/results", handlers.RecordExamResult)
+		handlers.RegisterRecordRoutes(rec)
 	}
 
 	router.Run(":8084")

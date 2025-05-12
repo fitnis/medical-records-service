@@ -19,10 +19,10 @@ func GetChartNotes() []models.ChartNote {
 
 func PerformExam(req models.ExamRequest) models.GenericResponse {
 	examRequests = append(examRequests, req)
-	return models.GenericResponse{Message: "Exam recorded"}
+	return models.GenericResponse{Message: "Exam performed"}
 }
 
-func RecordExamResult(res models.ExamResult) models.GenericResponse {
-	examResults = append(examResults, res)
+func RecordExamResult(result models.ExamResult) models.GenericResponse {
+	examResults = append(examResults, result)
 	return models.GenericResponse{Message: "Result recorded"}
 }

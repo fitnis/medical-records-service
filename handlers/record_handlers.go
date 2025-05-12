@@ -8,37 +8,32 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// curl -X POST -H "Content-Type: application/json" -d '{"patientId":"123","note":"Patient is stable."}' http://localhost:8084/records/chart
-func RecordChartNote(c *gin.Context) {
-	var note models.ChartNote
-	if err := c.ShouldBindJSON(&note); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid input"})
-		return
-	}
-	c.JSON(http.StatusCreated, services.RecordChartNote(note))
+func RegisterRecordRoutes(rg *gin.RouterGroup) {
+	rec := rg.Group("/records")
+	rec.POST("/chart", recordChart)
+	rec.GET("/chart", getChart)
+	rec.POST("/exam", performExam)
+	rec.POST("/exam/results", recordExamResult)
 }
 
-// curl http://localhost:8084/records/chart
-func GetChartNotes(c *gin.Context) {
+func recordChart(c *gin.Context) {
+	var req models.ChartNote
+	_ = c.ShouldBindJSON(&req)
+	c.JSON(http.StatusCreated, services.RecordChartNote(req))
+}
+
+func getChart(c *gin.Context) {
 	c.JSON(http.StatusOK, services.GetChartNotes())
 }
 
-// curl -X POST -H "Content-Type: application/json" -d '{"patientId":"123","examType":"CT Scan"}' http://localhost:8084/records/exam
-func PerformExam(c *gin.Context) {
+func performExam(c *gin.Context) {
 	var req models.ExamRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid input"})
-		return
-	}
+	_ = c.ShouldBindJSON(&req)
 	c.JSON(http.StatusCreated, services.PerformExam(req))
 }
 
-// curl -X POST -H "Content-Type: application/json" -d '{"patientId":"123","result":"All clear"}' http://localhost:8084/records/exam/results
-func RecordExamResult(c *gin.Context) {
-	var res models.ExamResult
-	if err := c.ShouldBindJSON(&res); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid input"})
-		return
-	}
-	c.JSON(http.StatusCreated, services.RecordExamResult(res))
+func recordExamResult(c *gin.Context) {
+	var req models.ExamResult
+	_ = c.ShouldBindJSON(&req)
+	c.JSON(http.StatusCreated, services.RecordExamResult(req))
 }

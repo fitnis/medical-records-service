@@ -14,7 +14,6 @@ type ExamResult struct {
 	PatientID string `json:"patientId"`
 	Result    string `json:"result"`
 }
-
 type GenericResponse struct {
 	Message string `json:"message"`
 }
